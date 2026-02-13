@@ -21,11 +21,18 @@ client.on('connect', () => {
 });
 
 client.on('message', (topic, message) => {
+    console.log(`Received MQTT: ${topic} => ${message.toString()}`);
     wss.clients.forEach(ws => {
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(message.toString());
+            console.log("Forwarded to WebSocket client");
         }
     });
+});
+
+wss.on('connection', ws => {
+    console.log('New WebSocket client connected');
+    ws.on('error', console.error);
 });
 
 // HTTP Endpoint for Top-Up

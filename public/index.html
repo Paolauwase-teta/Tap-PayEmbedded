@@ -145,18 +145,34 @@
     const socket = new WebSocket(`ws://${window.location.hostname}:9216`);
 
     socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log("Update received:", data);
+        try {
+            console.log("Raw payload:", event.data);
+            const data = JSON.parse(event.data);
+            console.log("Parsed data:", data);
 
-        // Update the UI instantly
-        document.getElementById('uid').innerText = data.uid;
-        document.getElementById('balance').innerText = data.balance.toLocaleString();
-        document.getElementById('log').innerText = "Last Updated: " + new Date().toLocaleTimeString();
-        
-        // Visual feedback
-        const card = document.querySelector('.card-view');
-        card.style.transform = "scale(1.02)";
-        setTimeout(() => card.style.transform = "scale(1)", 100);
+            if (!data.uid || data.balance === undefined) {
+                document.getElementById('log').innerText = "Error: Invalid data format received";
+                return;
+            }
+
+            // Update the UI instantly
+            document.getElementById('uid').innerText = data.uid;
+            document.getElementById('balance').innerText = data.balance.toLocaleString();
+            document.getElementById('log').innerText = "Last Updated: " + new Date().toLocaleTimeString();
+            
+            // Visual feedback
+            const card = document.querySelector('.card-view');
+            card.style.transform = "scale(1.02)";
+            setTimeout(() => card.style.transform = "scale(1)", 100);
+        } catch (e) {
+            console.error("Error processing message:", e);
+            document.getElementById('log').innerText = "Error parsing server data: " + e.message;
+        }
+    };
+
+    socket.onerror = (error) => {
+        console.error("WebSocket Error:", error);
+        document.getElementById('log').innerText = "Connection Error. Check console.";
     };
 
     async function sendTopUp() {
