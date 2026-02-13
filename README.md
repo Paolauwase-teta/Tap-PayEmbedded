@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 http://157.173.101.159:9216/
 # 💳 RFID Smart Wallet System
 **Team ID:** ubuliza_david  
@@ -65,3 +66,7 @@ A modern, responsive dashboard that updates automatically using the WebSocket `o
 2. **Server:** ```bash
    npm install express mqtt ws
    node server.js
+=======
+# swift-aidlyPro
+An Emergency Alert iOS app built with Swift, documenting my learning journey as I explore Swift fundamentals, iOS development concepts, and real-world app features.
+>>>>>>> 512812972c8628cfa3498de268fc481a15a6d42f
